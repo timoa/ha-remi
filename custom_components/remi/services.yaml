@@ -1,0 +1,115 @@
+create_alarm:
+  name: Create Alarm
+  description: Create a new alarm on the Remi device.
+  fields:
+    name:
+      name: Name
+      description: Label for the alarm.
+      required: true
+      example: "Wake up"
+      selector:
+        text:
+    time:
+      name: Time
+      description: ISO 8601 datetime string for the alarm (e.g. 2026-02-20T07:00:00.000Z).
+      required: true
+      example: "2026-02-20T07:00:00.000Z"
+      selector:
+        text:
+    enabled:
+      name: Enabled
+      description: Whether the alarm is active.
+      default: true
+      selector:
+        boolean:
+    repeat:
+      name: Repeat Days
+      description: List of day numbers to repeat (0=Sun, 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri, 6=Sat).
+      default: []
+      example: "[1, 2, 3, 4, 5]"
+      selector:
+        object:
+    face_define:
+      name: Face
+      description: Face to show at alarm time.
+      example: "FACE_DAY"
+      selector:
+        select:
+          options:
+            - "FACE_OFF"
+            - "FACE_DAY"
+            - "FACE_NIGHT"
+            - "FACE_SEMI_AWAKE"
+            - "FACE_SMILY"
+    volume:
+      name: Volume
+      description: Alarm volume override (0–100).
+      selector:
+        number:
+          min: 0
+          max: 100
+          step: 1
+
+update_alarm:
+  name: Update Alarm
+  description: Update an existing alarm on the Remi device.
+  fields:
+    event_id:
+      name: Event ID
+      description: The objectId of the alarm to update.
+      required: true
+      example: "abc123XYZ"
+      selector:
+        text:
+    name:
+      name: Name
+      description: New label for the alarm.
+      selector:
+        text:
+    time:
+      name: Time
+      description: New ISO 8601 datetime string.
+      example: "2026-02-20T07:00:00.000Z"
+      selector:
+        text:
+    enabled:
+      name: Enabled
+      description: Enable or disable the alarm.
+      selector:
+        boolean:
+    repeat:
+      name: Repeat Days
+      description: New repeat days list.
+      selector:
+        object:
+    face_define:
+      name: Face
+      description: New face define string.
+      selector:
+        select:
+          options:
+            - "FACE_OFF"
+            - "FACE_DAY"
+            - "FACE_NIGHT"
+            - "FACE_SEMI_AWAKE"
+            - "FACE_SMILY"
+    volume:
+      name: Volume
+      description: New volume override (0–100).
+      selector:
+        number:
+          min: 0
+          max: 100
+          step: 1
+
+delete_alarm:
+  name: Delete Alarm
+  description: Delete an alarm from the Remi device.
+  fields:
+    event_id:
+      name: Event ID
+      description: The objectId of the alarm to delete.
+      required: true
+      example: "abc123XYZ"
+      selector:
+        text:

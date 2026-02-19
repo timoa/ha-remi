@@ -1,0 +1,115 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Remi (Unofficial) - Connect to your device",
+        "description": "Enter your UrbanHello account credentials.",
+        "data": {
+          "username": "Username",
+          "password": "Password"
+        }
+      },
+      "device": {
+        "title": "Select your Remi device",
+        "description": "Multiple Remi devices found on this account. Select the one to add.",
+        "data": {
+          "remi_id": "Device"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Invalid username or password.",
+      "cannot_connect": "Cannot connect to the Remi server.",
+      "unknown": "An unexpected error occurred."
+    },
+    "abort": {
+      "already_configured": "This Remi device is already configured."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "temperature": { "name": "Temperature" },
+      "luminosity": { "name": "Luminosity" },
+      "rssi": { "name": "WiFi Signal" },
+      "firmware_version": { "name": "Firmware Version" },
+      "ip_address": { "name": "IP Address" },
+      "current_face": { "name": "Current Face" }
+    },
+    "binary_sensor": {
+      "online": { "name": "Online" },
+      "alive": { "name": "Alive" },
+      "firmware_update": { "name": "Firmware Update Available" }
+    },
+    "select": {
+      "face": { "name": "Clock Face" },
+      "clock_format": { "name": "Clock Format" },
+      "music_mode": { "name": "Music Mode" }
+    },
+    "number": {
+      "volume": { "name": "Volume" },
+      "noise_threshold": { "name": "Noise Alert Threshold" }
+    },
+    "light": {
+      "night_light": { "name": "Night Light" },
+      "background_color": { "name": "Background Color" }
+    }
+  },
+  "services": {
+    "create_alarm": {
+      "name": "Create Alarm",
+      "description": "Create a new alarm on the Remi device.",
+      "fields": {
+        "name": {
+          "name": "Name",
+          "description": "Label for the alarm."
+        },
+        "time": {
+          "name": "Time",
+          "description": "ISO 8601 datetime string for the alarm (e.g. 2026-02-20T07:00:00.000Z)."
+        },
+        "enabled": {
+          "name": "Enabled",
+          "description": "Whether the alarm is active."
+        },
+        "repeat": {
+          "name": "Repeat Days",
+          "description": "List of day numbers to repeat (0=Sun, 1=Mon, …, 6=Sat)."
+        },
+        "face_define": {
+          "name": "Face",
+          "description": "Face to show at alarm time (e.g. FACE_DAY)."
+        },
+        "volume": {
+          "name": "Volume",
+          "description": "Alarm volume override (0–100)."
+        }
+      }
+    },
+    "update_alarm": {
+      "name": "Update Alarm",
+      "description": "Update an existing alarm on the Remi device.",
+      "fields": {
+        "event_id": {
+          "name": "Event ID",
+          "description": "The objectId of the alarm to update."
+        },
+        "name": { "name": "Name", "description": "New label for the alarm." },
+        "time": { "name": "Time", "description": "New ISO 8601 datetime string." },
+        "enabled": { "name": "Enabled", "description": "Enable or disable the alarm." },
+        "repeat": { "name": "Repeat Days", "description": "New repeat days list." },
+        "face_define": { "name": "Face", "description": "New face define string." },
+        "volume": { "name": "Volume", "description": "New volume override." }
+      }
+    },
+    "delete_alarm": {
+      "name": "Delete Alarm",
+      "description": "Delete an alarm from the Remi device.",
+      "fields": {
+        "event_id": {
+          "name": "Event ID",
+          "description": "The objectId of the alarm to delete."
+        }
+      }
+    }
+  }
+}

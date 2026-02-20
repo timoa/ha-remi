@@ -1,3 +1,10 @@
+## [0.1.5](https://github.com/timoa/ha-remi/compare/0.1.4...0.1.5) (2026-02-20)
+
+
+### Bug Fixes
+
+* **docs:** update the README + move the icons in the /assets folder ([3c69b0b](https://github.com/timoa/ha-remi/commit/3c69b0b4a7d6344815c22b7f0e3d5954547dff3b))
+
 ## [0.1.4](https://github.com/timoa/ha-remi/compare/0.1.3...0.1.4) (2026-02-20)
 
 

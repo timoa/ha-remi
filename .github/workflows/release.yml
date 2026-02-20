@@ -1,15 +1,18 @@
-name: Build
+name: Release
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 # Declare default permissions as read only.
 permissions: read-all
 
 jobs:
 
-  # -- PRE-RELEASE ------------------------------------------------------------
-  pre-release:
-    name: Pre-Release
+  # -- RELEASE ------------------------------------------------------------
+  release:
+    name: Release
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
 

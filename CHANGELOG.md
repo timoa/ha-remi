@@ -1,3 +1,10 @@
+## [0.1.4](https://github.com/timoa/ha-remi/compare/0.1.3...0.1.4) (2026-02-20)
+
+
+### Bug Fixes
+
+* **project:** change the domain name to be more explicit ([59641a7](https://github.com/timoa/ha-remi/commit/59641a755ec714ac421257427b5244e3008f5c4d))
+
 ## [0.1.3](https://github.com/timoa/ha-remi/compare/0.1.2...0.1.3) (2026-02-20)
 
 

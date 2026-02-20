@@ -1,6 +1,6 @@
 """Constants for the UrbanHello Remi integration."""
 
-DOMAIN = "remi"
+DOMAIN = "urbanhello_remi_unofficial"
 
 API_BASE_URL = "https://remi2.urbanhello.com"
 API_APP_ID = "jf1a0bADt5fq"

@@ -18,9 +18,9 @@ Uses the Parse Server-based cloud API at `https://remi2.urbanhello.com`.
 ## File Structure
 
 ```text
-custom_components/remi/
+custom_components/urbanhello_remi_unofficial/
 ├── __init__.py           # Entry setup, platform forwarding, alarm CRUD services
-├── manifest.json         # Integration metadata (domain: remi, version: semver)
+├── manifest.json         # Integration metadata (domain: urbanhello_remi_unofficial, version: semver)
 ├── config_flow.py        # UI config flow — username + password only
 ├── const.py              # All constants: API URL, app ID, face/music mappings
 ├── coordinator.py        # RemiDataUpdateCoordinator — polls Remi + Event APIs
@@ -31,6 +31,7 @@ custom_components/remi/
 ├── select.py             # Clock face, clock format, music mode
 ├── number.py             # Volume, noise threshold
 ├── light.py              # Night light + background color (RGB)
+├── switch.py             # Alarm switches (one per alarm event)
 ├── services.yaml         # Alarm CRUD service definitions
 ├── strings.json          # UI strings
 └── translations/en.json  # English translations
@@ -75,7 +76,7 @@ custom_components/remi/
 
 - Class: `Event` on Parse Server
 - Linked to device via `remi` Pointer
-- CRUD via services: `remi.create_alarm`, `remi.update_alarm`, `remi.delete_alarm`
+- CRUD via services: `urbanhello_remi_unofficial.create_alarm`, `urbanhello_remi_unofficial.update_alarm`, `urbanhello_remi_unofficial.delete_alarm`
 - Field names (`name`, `time`, `enabled`, `repeat`, `face`, `volume`) are inferred — verify against real API response when available
 
 ## Coding Standards
@@ -87,6 +88,7 @@ custom_components/remi/
 - All writes call `coordinator.async_request_refresh()` after the API call
 - No hardcoded credentials or tokens in source files
 - Keep `const.py` as the single source of truth for all constants and mappings
+- **CRITICAL**: The folder name under `custom_components/` MUST match the `domain` in `manifest.json` AND `DOMAIN` in `const.py`
 
 ## Versioning
 

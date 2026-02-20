@@ -1,3 +1,10 @@
+## [0.1.6](https://github.com/timoa/ha-remi/compare/0.1.5...0.1.6) (2026-02-20)
+
+
+### Bug Fixes
+
+* **integration:** rename the integration "urbanhello_remi_unofficial" ([a28bbfc](https://github.com/timoa/ha-remi/commit/a28bbfc2313c859c0a9226625b6a44128e278dcc))
+
 ## [0.1.5](https://github.com/timoa/ha-remi/compare/0.1.4...0.1.5) (2026-02-20)
 
 

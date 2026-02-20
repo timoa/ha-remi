@@ -1,4 +1,4 @@
-# ha-remi
+# Home Assistant Remi Integration
 
 > **Unofficial** Home Assistant integration for the [UrbanHello Remi](https://www.urbanhello.com/) smart alarm clock.
 

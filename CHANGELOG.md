@@ -1,3 +1,10 @@
+## [0.1.3](https://github.com/timoa/ha-remi/compare/0.1.2...0.1.3) (2026-02-20)
+
+
+### Bug Fixes
+
+* **project:** add the icon files (light and dark variant) ([98b8df9](https://github.com/timoa/ha-remi/commit/98b8df986476f6a155815f50a041b562b8000db2))
+
 ## [0.1.2](https://github.com/timoa/ha-remi/compare/0.1.1...0.1.2) (2026-02-20)
 
 

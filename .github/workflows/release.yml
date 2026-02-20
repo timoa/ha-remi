@@ -1,0 +1,41 @@
+name: Build
+
+on: [push]
+
+# Declare default permissions as read only.
+permissions: read-all
+
+jobs:
+
+  # -- PRE-RELEASE ------------------------------------------------------------
+  pre-release:
+    name: Pre-Release
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Harden GitHub Actions Runner
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          ref: 'main' # Force checkout of main branch to avoid cache from previous jobs
+          persist-credentials: false
+
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.TIMOA_BOT_APP_ID }}
+          private-key: ${{ secrets.TIMOA_BOT_PRIVATE_KEY }}
+
+      - name: Create the Release
+        uses: cycjimmy/semantic-release-action@b12c8f6015dc215fe37bc154d4ad456dd3833c90 # v6.0.0
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}

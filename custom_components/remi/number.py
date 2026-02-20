@@ -41,6 +41,18 @@ NUMBER_DESCRIPTIONS: tuple[RemiNumberEntityDescription, ...] = (
         value_fn=lambda remi: remi.get("volume", 50),
     ),
     RemiNumberEntityDescription(
+        key="luminosity",
+        translation_key="luminosity",
+        name="Screen Brightness",
+        icon="mdi:brightness-6",
+        native_min_value=0,
+        native_max_value=100,
+        native_step=1,
+        mode=NumberMode.SLIDER,
+        field="luminosity",
+        value_fn=lambda remi: remi.get("luminosity", 50),
+    ),
+    RemiNumberEntityDescription(
         key="noise_threshold",
         translation_key="noise_threshold",
         name="Noise Alert Threshold",

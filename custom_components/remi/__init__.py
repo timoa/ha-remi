@@ -24,6 +24,7 @@ PLATFORMS: list[Platform] = [
     Platform.NUMBER,
     Platform.SELECT,
     Platform.SENSOR,
+    Platform.SWITCH,
 ]
 
 SERVICE_CREATE_ALARM = "create_alarm"

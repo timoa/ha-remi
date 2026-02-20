@@ -1,3 +1,10 @@
+## [0.1.2](https://github.com/timoa/ha-remi/compare/0.1.1...0.1.2) (2026-02-20)
+
+
+### Bug Fixes
+
+* **project:** simplify name of the integration ([2665b4c](https://github.com/timoa/ha-remi/commit/2665b4c744d210e2701fef381216fec3f88f62c8))
+
 ## [0.1.1](https://github.com/timoa/ha-remi/compare/0.1.0...0.1.1) (2026-02-20)
 
 

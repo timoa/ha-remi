@@ -208,3 +208,6 @@ __marimo__/
 
 # Postman
 .postman/
+
+# macOS
+.DS_Store

@@ -39,7 +39,7 @@ This is a community-maintained integration and is **not affiliated with or endor
 
 ### Manual
 
-1. Copy the `custom_components/remi/` folder into your HA `config/custom_components/` directory
+1. Copy the `custom_components/urbanhello_remi_unofficial/` folder into your HA `config/custom_components/` directory
 2. Restart Home Assistant
 
 ---
@@ -47,7 +47,7 @@ This is a community-maintained integration and is **not affiliated with or endor
 ## Configuration
 
 1. Go to **Settings → Integrations → Add Integration**
-2. Search for **Remi (Unofficial)**
+2. Search for **Remi**
 3. Enter your UrbanHello account **username** and **password**
 4. The integration will authenticate and discover your Remi device automatically
 
@@ -113,7 +113,7 @@ This integration was inspired by [Remi_UrbanHello_hass](https://github.com/pdrua
 
 ## Disclaimer
 
-This integration uses the unofficial UrbanHello cloud API, reverse-engineered via SSL proxy. It may break if UrbanHello changes their API. Use at your own risk.
+This integration uses the official UrbanHello cloud API. It may break if UrbanHello changes their API. Use at your own risk.
 
 ## License
 

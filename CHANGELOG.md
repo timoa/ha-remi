@@ -1,3 +1,10 @@
+## [0.1.8](https://github.com/timoa/ha-remi/compare/0.1.7...0.1.8) (2026-02-21)
+
+
+### Bug Fixes
+
+* **docs:** update the README ([f749427](https://github.com/timoa/ha-remi/commit/f749427bbf4a3052c10b5b063aed8b713d118d77))
+
 ## [0.1.7](https://github.com/timoa/ha-remi/compare/0.1.6...0.1.7) (2026-02-21)
 
 

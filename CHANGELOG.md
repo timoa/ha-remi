@@ -1,3 +1,11 @@
+## [0.1.7](https://github.com/timoa/ha-remi/compare/0.1.6...0.1.7) (2026-02-21)
+
+
+### Bug Fixes
+
+* **i18n:** rename Screen Brightness to Brightness ([2f8cb0f](https://github.com/timoa/ha-remi/commit/2f8cb0f7c379a0fbf422b79c48b0f626ae2cc3f1))
+* **tests:** add missing tests ([a7c00f9](https://github.com/timoa/ha-remi/commit/a7c00f9d8839c1d3956480809b2e350175b44c27))
+
 ## [0.1.6](https://github.com/timoa/ha-remi/compare/0.1.5...0.1.6) (2026-02-20)
 
 

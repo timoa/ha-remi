@@ -10,11 +10,47 @@ permissions: read-all
 
 jobs:
 
+  # -- TESTS --------------------------------------------------------------
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Harden GitHub Actions Runner
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements-test.txt
+
+      - name: Run tests with coverage
+        run: pytest --cov --cov-report=xml --cov-report=term-missing
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: coverage.xml
+          fail_ci_if_error: false
+
   # -- RELEASE ------------------------------------------------------------
   release:
     name: Release
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
+    needs: tests
 
     permissions:
       contents: write

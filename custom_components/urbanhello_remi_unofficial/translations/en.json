@@ -47,7 +47,7 @@
     },
     "number": {
       "volume": { "name": "Volume" },
-      "luminosity": { "name": "Screen Brightness" },
+      "luminosity": { "name": "Brightness" },
       "noise_threshold": { "name": "Noise Alert Threshold" }
     },
     "switch": {

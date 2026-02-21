@@ -13,7 +13,7 @@ This is a community-maintained integration and is **not affiliated with or endor
 - **Sensors**: Room temperature, ambient luminosity, WiFi signal strength, firmware version, IP address, current face
 - **Binary Sensors**: Online status, alive status, firmware update available
 - **Select**: Clock face (Off / Awake / Sleepy / Semi-Awake / Smiley), clock format (12h / 24h), music mode
-- **Number**: Volume, screen brightness, noise alert threshold
+- **Number**: Volume, brightness, noise alert threshold
 - **Switch**: Per-alarm enable/disable toggles (one switch per alarm)
 - **Lights**: Night light (RGB), background color (RGB)
 - **Alarm CRUD**: Create, update and delete alarms via HA services
@@ -70,7 +70,7 @@ This is a community-maintained integration and is **not affiliated with or endor
 | Clock Format | Select | 12h or 24h format |
 | Music Mode | Select | Off / Music / White Noise |
 | Volume | Number | Speaker volume (0–100) |
-| Screen Brightness | Number | Screen brightness (0–100) |
+| Brightness | Number | Brightness (0–100) |
 | Noise Alert Threshold | Number | Noise notification threshold (0–100) |
 | Night Light | Light | RGB night light color |
 | Background Color | Light | RGB background LED color |
@@ -107,7 +107,7 @@ Same fields as `create_alarm`, plus `event_id` (required) — the `objectId` of 
 
 ## Credits
 
-This integration was inspired by [Remi_UrbanHello_hass](https://github.com/pdruart/Remi_UrbanHello_hass) by [@pdruart](https://github.com/pdruart), which provided valuable insights into the alarm toggle functionality and screen brightness control.
+This integration was inspired by [Remi_UrbanHello_hass](https://github.com/pdruart/Remi_UrbanHello_hass) by [@pdruart](https://github.com/pdruart), which provided valuable insights into the alarm toggle functionality and brightness control.
 
 ---
 

@@ -1,3 +1,10 @@
+## [0.1.9](https://github.com/timoa/ha-remi/compare/0.1.8...0.1.9) (2026-03-03)
+
+
+### Bug Fixes
+
+* **brand:** add the new logo and icons for HA 2026.3 version ([f5ae6d3](https://github.com/timoa/ha-remi/commit/f5ae6d3a69c162b956f7c5ae7b5dff95105c2dd9))
+
 ## [0.1.8](https://github.com/timoa/ha-remi/compare/0.1.7...0.1.8) (2026-02-21)
 
 

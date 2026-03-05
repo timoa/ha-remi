@@ -58,7 +58,7 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "sed -i '' 's/\"version\": \".*\"/\"version\": \"${nextRelease.version}\"/' custom_components/urbanhello_remi_unofficial/manifest.json"
+        "prepareCmd": "node -e \"const fs=require('fs');const f='custom_components/urbanhello_remi_unofficial/manifest.json';const m=JSON.parse(fs.readFileSync(f));m.version='${nextRelease.version}';fs.writeFileSync(f,JSON.stringify(m,null,2)+'\\n');\""
       }
     ],
     [

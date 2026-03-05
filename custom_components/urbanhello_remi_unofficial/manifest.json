@@ -1,12 +1,12 @@
 {
   "domain": "urbanhello_remi_unofficial",
   "name": "Remi",
-  "version": "0.1.9",
+  "codeowners": ["@timoa"],
+  "config_flow": true,
+  "dependencies": [],
   "documentation": "https://github.com/timoa/ha-remi",
+  "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/timoa/ha-remi/issues",
   "requirements": [],
-  "dependencies": [],
-  "codeowners": ["@timoa"],
-  "iot_class": "cloud_polling",
-  "config_flow": true
+  "version": "0.1.9"
 }

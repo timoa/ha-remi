@@ -1,3 +1,18 @@
+# [0.2.0](https://github.com/timoa/ha-remi/compare/0.1.9...0.2.0) (2026-03-05)
+
+
+### Bug Fixes
+
+* **cicd:** add extra_plugins to semantic-release action ([f939d3a](https://github.com/timoa/ha-remi/commit/f939d3a1546b2ae806d609cbca160ddf9b0a5ef5))
+* **cicd:** fix the Semantic Release command + remove unused package.json ([a9bc823](https://github.com/timoa/ha-remi/commit/a9bc823a8bcb5e20e9c7f0d89f42f512d3eddc01))
+* **hacs:** fix the manifest.json for HACS Store ([26ddf91](https://github.com/timoa/ha-remi/commit/26ddf9179b29e58fb21ccfb08d51096d08803972))
+* **project:** fix the Semantic release issue ([b2aaf2c](https://github.com/timoa/ha-remi/commit/b2aaf2cf6c6180044325efd239986707fcb74f35))
+
+
+### Features
+
+* **hacs:** add checks for the HACS store ([055ae22](https://github.com/timoa/ha-remi/commit/055ae2254ae8b69def9a2b02a4dd21574caa6956))
+
 ## [0.1.9](https://github.com/timoa/ha-remi/compare/0.1.8...0.1.9) (2026-03-03)
 
 

@@ -56,11 +56,18 @@
       }
     ],
     [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "sed -i '' 's/\"version\": \".*\"/\"version\": \"${nextRelease.version}\"/' custom_components/urbanhello_remi_unofficial/manifest.json"
+      }
+    ],
+    [
       "@semantic-release/git",
       {
         "assets": [
           "CHANGELOG.md",
-          "README.md"
+          "README.md",
+          "custom_components/urbanhello_remi_unofficial/manifest.json"
         ]
       }
     ],

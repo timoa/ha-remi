@@ -1,7 +1,7 @@
 {
   "domain": "urbanhello_remi_unofficial",
   "name": "Remi",
-  "version": "0.1.0",
+  "version": "0.1.9",
   "documentation": "https://github.com/timoa/ha-remi",
   "issue_tracker": "https://github.com/timoa/ha-remi/issues",
   "requirements": [],

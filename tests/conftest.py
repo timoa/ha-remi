@@ -49,7 +49,7 @@ MOCK_EVENT_DATA: list[dict[str, Any]] = [
         "name": "Morning Alarm",
         "enabled": True,
         "event_time": [7, 30],
-        "recurrence": [False, True, True, True, True, True, False],
+        "recurrence": [1, 1, 1, 1, 1, 0, 0],
         "volume": 80,
         "face": {"__type": "Pointer", "className": "Face", "objectId": "fIjF0yWRxX"},
     }

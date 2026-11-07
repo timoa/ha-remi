@@ -27,6 +27,12 @@
     }
   },
   "entity": {
+    "button": {
+      "check_firmware": { "name": "Check firmware status" }
+    },
+    "time": {
+      "alarm_time": { "name": "{name} time" }
+    },
     "sensor": {
       "temperature": { "name": "Temperature" },
       "rssi": { "name": "WiFi Signal" },
@@ -67,7 +73,7 @@
         },
         "time": {
           "name": "Time",
-          "description": "ISO 8601 datetime string for the alarm (e.g. 2026-02-20T07:00:00.000Z)."
+          "description": "Clock time in the REMI time zone (HH:MM, minute precision)."
         },
         "enabled": {
           "name": "Enabled",
@@ -96,7 +102,7 @@
           "description": "The objectId of the alarm to update."
         },
         "name": { "name": "Name", "description": "New label for the alarm." },
-        "time": { "name": "Time", "description": "New ISO 8601 datetime string." },
+        "time": { "name": "Time", "description": "Clock time in the REMI time zone (HH:MM, minute precision)." },
         "enabled": { "name": "Enabled", "description": "Enable or disable the alarm." },
         "repeat": { "name": "Repeat Days", "description": "New repeat days list." },
         "face_define": { "name": "Face", "description": "New face define string." },

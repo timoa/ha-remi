@@ -64,31 +64,31 @@ class TestFirmwareUpdateBinarySensor:
 
     def test_update_available_when_newer_version_exists(self):
         desc = _get_description("firmware_update")
-        remi = {"current_firmware_version": 100}
+        remi = {"current_firmware_version": 100, "update_firmware_version": 110}
         assert desc.value_fn(remi, 110) is True
 
     def test_no_update_when_on_latest(self):
         desc = _get_description("firmware_update")
-        remi = {"current_firmware_version": 110}
+        remi = {"current_firmware_version": 110, "update_firmware_version": 110}
         assert desc.value_fn(remi, 110) is False
 
     def test_no_update_when_latest_is_none(self):
         desc = _get_description("firmware_update")
         remi = {"current_firmware_version": 100}
-        assert desc.value_fn(remi, None) is False
+        assert desc.value_fn(remi, None) is None
 
     def test_no_update_when_firmware_missing(self):
         desc = _get_description("firmware_update")
-        assert desc.value_fn({}, 110) is True
+        assert desc.value_fn({}, 110) is None
 
     def test_no_update_when_both_missing(self):
         desc = _get_description("firmware_update")
-        assert desc.value_fn({}, None) is False
+        assert desc.value_fn({}, None) is None
 
     def test_firmware_update_from_mock_data(self):
         desc = _get_description("firmware_update")
-        assert desc.value_fn(MOCK_REMI_DATA, 110) is True
+        assert desc.value_fn({**MOCK_REMI_DATA, "update_firmware_version": 110}, 110) is True
 
     def test_no_firmware_update_from_mock_data_same_version(self):
         desc = _get_description("firmware_update")
-        assert desc.value_fn(MOCK_REMI_DATA, 100) is False
+        assert desc.value_fn({**MOCK_REMI_DATA, "update_firmware_version": 100}, 100) is False

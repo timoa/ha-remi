@@ -73,10 +73,14 @@ class TestRemiAlarmSwitchEntity:
 
     def test_extra_state_attributes_recurrence(self, alarm_switch, coordinator):
         coordinator.events = [
-            {**MOCK_EVENT, "recurrence": [False, True, True, True, True, True, False]}
+            {**MOCK_EVENT, "recurrence": [1, 1, 1, 1, 1, 0, 0]}
         ]
         attrs = alarm_switch.extra_state_attributes
         assert attrs["recurrence"] == ["mon", "tue", "wed", "thu", "fri"]
+
+    def test_weekend_recurrence(self, alarm_switch, coordinator):
+        coordinator.events = [{**MOCK_EVENT, "recurrence": [0, 0, 0, 0, 0, 1, 1]}]
+        assert alarm_switch.extra_state_attributes["recurrence"] == ["sat", "sun"]
 
     def test_extra_state_attributes_face(self, alarm_switch, coordinator):
         coordinator.events = [

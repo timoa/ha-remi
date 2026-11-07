@@ -16,6 +16,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from .const import DOMAIN
 from .coordinator import RemiDataUpdateCoordinator
 from .entity import RemiEntity
+from .firmware import firmware_update_available, firmware_update_requested, firmware_version
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -46,10 +47,7 @@ BINARY_SENSOR_DESCRIPTIONS: tuple[RemiBinarySensorEntityDescription, ...] = (
         translation_key="firmware_update",
         name="Firmware Update Available",
         device_class=BinarySensorDeviceClass.UPDATE,
-        value_fn=lambda remi, latest: (
-            latest is not None
-            and remi.get("current_firmware_version", 0) < latest
-        ),
+        value_fn=firmware_update_available,
     ),
 )
 
@@ -82,7 +80,7 @@ class RemiBinarySensorEntity(RemiEntity, BinarySensorEntity):
         self._attr_unique_id = f"{self._remi_id}_{description.key}"
 
     @property
-    def is_on(self) -> bool:
+    def is_on(self) -> bool | None:
         """Return true if the binary sensor is on."""
         remi = self.coordinator.remi
         if self.entity_description.key == "firmware_update":
@@ -90,3 +88,17 @@ class RemiBinarySensorEntity(RemiEntity, BinarySensorEntity):
                 remi, self.coordinator.latest_firmware_version
             )
         return self.entity_description.value_fn(remi)
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any] | None:
+        """Explain the device-specific firmware status without exposing account data."""
+        if self.entity_description.key != "firmware_update":
+            return None
+        remi = self.coordinator.remi
+        return {
+            "installed_version": firmware_version(remi.get("current_firmware_version")),
+            "target_version": firmware_version(remi.get("update_firmware_version")),
+            "server_default_version": firmware_version(self.coordinator.latest_firmware_version),
+            "update_requested": firmware_update_requested(remi),
+            "update_method": "automatic_wifi",
+        }

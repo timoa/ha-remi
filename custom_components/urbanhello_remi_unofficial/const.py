@@ -35,9 +35,11 @@ FACE_OBJECT_ID_TO_DEFINE = {
 FACE_DEFINE_TO_OBJECT_ID = {v: k for k, v in FACE_OBJECT_ID_TO_DEFINE.items()}
 
 MUSIC_MODE_OPTIONS = {
-    0: "Off",
-    1: "Music",
-    2: "White Noise",
+    0: "Normal",
+    1: "Single track",
+    2: "Repeat track",
+    3: "Repeat playlist",
 }
 
-DAYS_OF_WEEK = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]
+# The REMI recurrence array starts on Monday (unlike the legacy service input).
+DAYS_OF_WEEK = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]

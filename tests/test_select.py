@@ -199,6 +199,28 @@ class TestRemiMusicModeSelectEntity:
         entity = RemiMusicModeSelectEntity(mock_coordinator)
         assert entity.current_option is None
 
+    @pytest.mark.parametrize("mode, label", [
+        (0, "Normal"), (1, "Single track"), (2, "Repeat track"), (3, "Repeat playlist")
+    ])
+    async def test_official_repeat_modes(self, mock_coordinator, mode, label):
+        mock_coordinator.remi["musicMode"] = mode
+        entity = RemiMusicModeSelectEntity(mock_coordinator)
+        assert entity.current_option == label
+        await entity.async_select_option(label)
+        mock_coordinator.client.update_remi.assert_awaited_once_with({"musicMode": mode})
+
+    async def test_invalid_music_mode_does_not_reset_playback(self, mock_coordinator):
+        from homeassistant.exceptions import ServiceValidationError
+
+        entity = RemiMusicModeSelectEntity(mock_coordinator)
+        with pytest.raises(ServiceValidationError):
+            await entity.async_select_option("White Noise")
+        mock_coordinator.client.update_remi.assert_not_called()
+
+    def test_missing_music_mode_is_unknown(self, mock_coordinator):
+        mock_coordinator.remi.pop("musicMode", None)
+        assert RemiMusicModeSelectEntity(mock_coordinator).current_option is None
+
     async def test_select_option_updates_music_mode(self, mock_coordinator):
         entity = RemiMusicModeSelectEntity(mock_coordinator)
         target_mode = next(k for k, v in MUSIC_MODE_OPTIONS.items() if v != MUSIC_MODE_OPTIONS[1])

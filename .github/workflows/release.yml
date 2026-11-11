@@ -2,7 +2,7 @@ name: Release
 
 on:
   workflow_run:
-    workflows: ["Tests"]
+    workflows: ["CI"]
     types:
       - completed
     branches:
@@ -11,13 +11,22 @@ on:
 # Declare default permissions as read only.
 permissions: read-all
 
+# One release at a time: a second merge waits instead of racing on the version.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
 jobs:
 
   # -- RELEASE ------------------------------------------------------------
   release:
     name: Release
     runs-on: ubuntu-latest
-    if: github.event.workflow_run.conclusion == 'success'
+    timeout-minutes: 15
+    # The HACS delivery only happens when every check of the CI workflow passed.
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push'
 
     permissions:
       contents: write
@@ -34,6 +43,16 @@ jobs:
           ref: 'main' # Force checkout of main branch to avoid cache from previous jobs
           persist-credentials: false
 
+      - name: Check the tested commit is still the tip of main
+        id: tested
+        env:
+          TESTED_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          if [ "$(git rev-parse HEAD)" != "$TESTED_SHA" ]; then
+            echo "::warning::main moved on since $TESTED_SHA was tested, skipping the release: the newer commit gets its own CI run."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Generate GitHub App token
         id: app-token
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3
@@ -42,6 +61,7 @@ jobs:
           private-key: ${{ secrets.TIMOA_BOT_PRIVATE_KEY }}
 
       - name: Create the Release
+        if: steps.tested.outputs.skip != 'true'
         uses: cycjimmy/semantic-release-action@d9bf53a078bd2f86aaffaec796dbb3d28f1b6f34 # v8.1.3
         with:
           extra_plugins: |

@@ -1,0 +1,95 @@
+{
+  "analysis_date": "2026-11-07",
+  "scope": "Interoperability findings for temperature, alarm fields, playback modes and firmware status, corroborated by read-only observations of one REMI.",
+  "source": {
+    "package": "com.app.urbanhello",
+    "version_name": "3.4.23",
+    "version_code": 3423,
+    "architecture": "arm64-v8a",
+    "library": "libapp.so",
+    "sha256": "21238f8aa40f9676b4b9c7afde017d846bd46d4c5ab767053ed5b019e1f9ad85",
+    "method": "Blutter annotated ARM64 disassembly; addresses refer only to this build.",
+    "redistribution": "No app binaries or decompiled source are included. This file records interoperability findings."
+  },
+  "temperature": {
+    "status": "Implemented and tested with fractional values preserved.",
+    "cloud_field": "temp",
+    "app_conversion": "truncate_toward_zero((raw - 50) / 5)",
+    "app_inverse_conversion": "celsius_integer * 5 + 50",
+    "integration_conversion": "(raw - 50) / 5",
+    "display_precision": 1,
+    "source_file": "globals/services/remi_manager/stored_property/stored_property_temperature.dart",
+    "conversion_address": "0x651174",
+    "inverse_address": "0x6511b8",
+    "model_confirmation_address": "0x56f1bc",
+    "observed_example": {
+      "raw": 160,
+      "app_celsius": 22,
+      "upstream_ha_celsius": 20.0,
+      "corrected_ha_celsius": 22.0
+    },
+    "limitation": "A correct conversion and decimal display do not establish sensor calibration or physical accuracy."
+  },
+  "alarms": {
+    "status": "Cloud clock-time edits, service field fixes and weekday labels implemented. Reading verified on HA 2026.11.0; writes tested with mocked API responses.",
+    "source_file": "models/event_model.dart",
+    "serialization_address": "0x57b984",
+    "clock_field": "event_time",
+    "clock_shape": [
+      "hour",
+      "minute"
+    ],
+    "clock_serialization_address": "0x57bc98",
+    "recurrence_field": "recurrence",
+    "recurrence_shape": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+    ],
+    "recurrence_values": "Seven integers, 0 or 1.",
+    "recurrence_serialization_address": "0x57bd40",
+    "weekday_evidence": "Existing cloud arrays matched the weekly view in the REMI app, which starts on Monday.",
+    "service_compatibility": "The existing public repeat input still uses Sunday=0 through Saturday=6; it is converted to the Monday-first array.",
+    "clock_timezone": "Device local time; no UTC date is synthesized."
+  },
+  "music_mode": {
+    "status": "Corrected option labels; device playback not exercised.",
+    "cloud_field": "musicMode",
+    "mapping": {
+      "0": "Normal",
+      "1": "Single track",
+      "2": "Repeat track",
+      "3": "Repeat playlist"
+    },
+    "source_file": "modules/music/widgets/music_player.dart",
+    "cycle_address": "0x846120",
+    "cycle_order": [
+      0,
+      1,
+      3,
+      2
+    ],
+    "icon_map_pool_offset": "0x32450",
+    "evidence": "Icon mapping: oneDisable, oneEnable, repeat1Enable and repeatEnable for modes 0, 1, 2 and 3 respectively."
+  },
+  "firmware": {
+    "status": "Device-specific eligibility implemented; firmware installation not implemented.",
+    "device_fields": [
+      "current_firmware_version",
+      "update_firmware_version",
+      "firmware_need_update"
+    ],
+    "observed_values": {
+      "installed": 332,
+      "assigned_target": 332,
+      "update_requested": 0,
+      "server_default": 333
+    },
+    "interpretation": "The server-wide default is not proof that an update has been assigned to this REMI.",
+    "manufacturer_reference": "https://www.urbanhello.com/fr/faq/faqs/comment-mettre-a-jour-remi-manuellement-"
+  }
+}

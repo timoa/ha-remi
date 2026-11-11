@@ -1,0 +1,19 @@
+{
+  "entity": {
+    "button": {
+      "check_firmware": {
+        "name": "Vérifier le firmware"
+      }
+    },
+    "binary_sensor": {
+      "firmware_update": {
+        "name": "Mise à jour du firmware disponible"
+      }
+    },
+    "time": {
+      "alarm_time": {
+        "name": "Heure de {name}"
+      }
+    }
+  }
+}

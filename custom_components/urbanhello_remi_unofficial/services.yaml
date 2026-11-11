@@ -11,9 +11,9 @@ create_alarm:
         text:
     time:
       name: Time
-      description: ISO 8601 datetime string for the alarm (e.g. 2026-02-20T07:00:00.000Z).
+      description: Clock time in the REMI time zone (HH:MM, minute precision).
       required: true
-      example: "2026-02-20T07:00:00.000Z"
+      example: "07:00"
       selector:
         text:
     enabled:
@@ -68,8 +68,8 @@ update_alarm:
         text:
     time:
       name: Time
-      description: New ISO 8601 datetime string.
-      example: "2026-02-20T07:00:00.000Z"
+      description: Clock time in the REMI time zone (HH:MM, minute precision).
+      example: "07:00"
       selector:
         text:
     enabled:

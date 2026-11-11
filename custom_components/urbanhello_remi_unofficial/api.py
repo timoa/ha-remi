@@ -1,6 +1,7 @@
 """API client for the UrbanHello Remi integration."""
 from __future__ import annotations
 
+import asyncio
 import logging
 from typing import Any
 
@@ -19,34 +20,44 @@ from .const import (
 _LOGGER = logging.getLogger(__name__)
 
 
-class RemiAuthError(Exception):
+class RemiApiError(Exception):
+    """Raised when an API call fails."""
+
+
+class RemiAuthError(RemiApiError):
     """Raised when authentication fails."""
 
 
-class RemiApiError(Exception):
-    """Raised when an API call fails."""
+class _TransientApiError(RemiApiError):
+    """A transient response that may only be retried for read operations."""
 
 
 class RemiApiClient:
     """Client for the UrbanHello Remi Parse Server API."""
 
     def __init__(self, username: str, password: str, session: aiohttp.ClientSession, installation_id: str = "") -> None:
+        """Store the account credentials and the shared HTTP session."""
         self._username = username
         self._password = password
         self._session = session
         self._installation_id = installation_id
         self._session_token: str | None = None
         self._remi_id: str | None = None
+        self._auth_lock = asyncio.Lock()
+        self._timeout = aiohttp.ClientTimeout(total=15)
 
     @property
     def remi_id(self) -> str | None:
+        """Return the identifier of the selected device."""
         return self._remi_id
 
     @property
     def session_token(self) -> str | None:
+        """Return the current Parse session token."""
         return self._session_token
 
     def _base_headers(self, authenticated: bool = True) -> dict[str, str]:
+        """Return the Parse headers, with the session token when authenticated."""
         headers = {
             "X-Parse-Client-Version": API_CLIENT_VERSION,
             "X-Parse-Application-Id": API_APP_ID,
@@ -78,7 +89,8 @@ class RemiApiClient:
             "password": self._password,
         }
         async with self._session.post(
-            url, json=payload, headers=self._base_headers(authenticated=False)
+            url, json=payload, headers=self._base_headers(authenticated=False),
+            timeout=self._timeout,
         ) as resp:
             if resp.status == 401:
                 raise RemiAuthError("Invalid username or password")
@@ -98,7 +110,8 @@ class RemiApiClient:
             all_remi_ids = [current_remi_id]
 
         self._session_token = session_token
-        self._remi_id = current_remi_id
+        if self._remi_id is None:
+            self._remi_id = current_remi_id
         return session_token, current_remi_id, all_remi_ids
 
     async def _request(
@@ -108,19 +121,41 @@ class RemiApiClient:
         payload: dict[str, Any] | None = None,
         retry_auth: bool = True,
     ) -> Any:
-        """Make an authenticated API request, re-logging in on 401."""
+        """Retry transient read failures, without replaying device commands."""
+        is_read = method.upper() == "GET" or (
+            method.upper() == "POST" and (payload or {}).get("_method") == "GET"
+        )
+        for attempt in range(3 if is_read else 1):
+            try:
+                return await self._request_once(method, path, payload, retry_auth)
+            except (_TransientApiError, aiohttp.ClientError, TimeoutError) as err:
+                if not is_read or attempt == 2:
+                    detail = str(err) if isinstance(err, _TransientApiError) else type(err).__name__
+                    raise RemiApiError(f"REMI request failed on {path}: {detail}") from err
+                await asyncio.sleep(0.5 * (attempt + 1))
+
+    async def _request_once(self, method, path, payload, retry_auth):
+        """Perform one request and at most one authentication recovery."""
         url = f"{API_BASE_URL}{path}"
+        token_used = self._session_token
         async with self._session.request(
-            method, url, json=payload, headers=self._base_headers()
+            method, url, json=payload, headers=self._base_headers(), timeout=self._timeout
         ) as resp:
-            if resp.status == 401 and retry_auth:
-                _LOGGER.debug("Session expired, re-authenticating")
+            status = resp.status
+            if status != 401:
+                if status in (500, 502, 503, 504):
+                    raise _TransientApiError(f"API error {status} on {path}")
+                if status not in (200, 201):
+                    raise RemiApiError(f"API error {status} on {path}")
+                return await resp.json()
+        # Release the response before logging in; concurrent expired reads share
+        # one refreshed session instead of racing two logins against each other.
+        if not retry_auth:
+            raise RemiAuthError("REMI authentication failed after reconnecting")
+        async with self._auth_lock:
+            if self._session_token == token_used:
                 await self.login()
-                return await self._request(method, path, payload, retry_auth=False)
-            if resp.status not in (200, 201):
-                text = await resp.text()
-                raise RemiApiError(f"API error {resp.status} on {path}: {text}")
-            return await resp.json()
+        return await self._request_once(method, path, payload, False)
 
     async def get_remi(self) -> dict[str, Any]:
         """Fetch the Remi device state."""
@@ -136,6 +171,8 @@ class RemiApiClient:
         results = data.get("results", [])
         if not results:
             raise RemiApiError("No Remi device found")
+        if len(results) != 1 or results[0].get("objectId") != self._remi_id:
+            raise RemiApiError("REMI response does not match the selected device")
         return results[0]
 
     async def update_remi(self, fields: dict[str, Any]) -> dict[str, Any]:

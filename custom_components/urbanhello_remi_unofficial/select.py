@@ -4,6 +4,7 @@ from __future__ import annotations
 from homeassistant.components.select import SelectEntity, SelectEntityDescription
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import ServiceValidationError
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import (
@@ -41,6 +42,7 @@ class RemiFaceSelectEntity(RemiEntity, SelectEntity):
     _attr_options = list(FACE_DEFINE_TO_NAME.values())
 
     def __init__(self, coordinator: RemiDataUpdateCoordinator) -> None:
+        """Bind the select to its unique id."""
         super().__init__(coordinator)
         self._attr_unique_id = f"{self._remi_id}_face"
 
@@ -82,6 +84,7 @@ class RemiClockFormatSelectEntity(RemiEntity, SelectEntity):
     _attr_options = ["12h", "24h"]
 
     def __init__(self, coordinator: RemiDataUpdateCoordinator) -> None:
+        """Bind the select to its unique id."""
         super().__init__(coordinator)
         self._attr_unique_id = f"{self._remi_id}_clock_format"
 
@@ -106,19 +109,24 @@ class RemiMusicModeSelectEntity(RemiEntity, SelectEntity):
     _attr_options = list(MUSIC_MODE_OPTIONS.values())
 
     def __init__(self, coordinator: RemiDataUpdateCoordinator) -> None:
+        """Bind the select to its unique id."""
         super().__init__(coordinator)
         self._attr_unique_id = f"{self._remi_id}_music_mode"
 
     @property
     def current_option(self) -> str | None:
         """Return the current music mode label."""
-        mode = self.coordinator.remi.get("musicMode", 0)
+        mode = self.coordinator.remi.get("musicMode")
+        if type(mode) is not int:
+            return None
         return MUSIC_MODE_OPTIONS.get(mode)
 
     async def async_select_option(self, option: str) -> None:
         """Change the music mode."""
         mode = next(
-            (k for k, v in MUSIC_MODE_OPTIONS.items() if v == option), 0
+            (k for k, v in MUSIC_MODE_OPTIONS.items() if v == option), None
         )
+        if mode is None:
+            raise ServiceValidationError("Unknown REMI playback mode")
         await self.coordinator.client.update_remi({"musicMode": mode})
         await self.coordinator.async_request_refresh()

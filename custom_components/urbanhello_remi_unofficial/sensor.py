@@ -32,12 +32,17 @@ class RemiSensorEntityDescription(SensorEntityDescription):
 
 
 def _temperature_value(remi: dict[str, Any]) -> float | None:
-    """Decode REMI temperature, leaving missing or invalid readings unknown."""
+    """Use the app's Celsius scale while preserving fractional measurements.
+
+    REMI Android 3.4.23: StoredPropertyTemperature at 0x651174 subtracts
+    50, then divides by 5. Unlike the app, keep the decimal part instead of truncating it.
+    See docs/protocol-3.4.23.json.
+    """
     raw = remi.get("temp")
     if type(raw) not in (int, float):
         return None
     try:
-        temperature = (raw + 40) / 10
+        temperature = (raw - 50) / 5
     except OverflowError:
         return None
     return temperature if math.isfinite(temperature) else None
@@ -117,6 +122,7 @@ class RemiSensorEntity(RemiEntity, SensorEntity):
         coordinator: RemiDataUpdateCoordinator,
         description: RemiSensorEntityDescription,
     ) -> None:
+        """Bind the entity to its description and unique id."""
         super().__init__(coordinator)
         self.entity_description = description
         self._attr_unique_id = f"{self._remi_id}_{description.key}"
@@ -125,3 +131,14 @@ class RemiSensorEntity(RemiEntity, SensorEntity):
     def native_value(self) -> Any:
         """Return the sensor value."""
         return self.entity_description.value_fn(self.coordinator.remi)
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any] | None:
+        """Expose the temperature input for checking future app discrepancies."""
+        if self.entity_description.key != "temperature":
+            return None
+        remi = self.coordinator.remi
+        return {
+            "raw_value": remi.get("temp") if _temperature_value(remi) is not None else None,
+            "conversion": "(raw - 50) / 5",
+        }

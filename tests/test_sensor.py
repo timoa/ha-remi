@@ -18,7 +18,9 @@ class TestTemperatureSensor:
 
     @pytest.mark.parametrize(
         ("raw", "expected"),
-        [(170, 21.0), (171, 21.1), (157, 19.7), (157.5, 19.75), (0, 4.0)],
+        [(160, 22), (184, 26.8), (178, 25.6), (170, 24), (171, 24.2),
+         (157, 21.4), (157.5, 21.5), (158.5, 21.7), (0, -10),
+         (49, -0.2), (44, -1.2)],
     )
     def test_temperature_formula(self, raw, expected):
         desc = _get_description("temperature")
@@ -26,11 +28,11 @@ class TestTemperatureSensor:
 
     def test_temperature_formula_zero(self):
         desc = _get_description("temperature")
-        assert desc.value_fn({"temp": -40}) == pytest.approx(0.0)
+        assert desc.value_fn({"temp": 50}) == 0
 
     def test_temperature_formula_negative(self):
         desc = _get_description("temperature")
-        assert desc.value_fn({"temp": -90}) == pytest.approx(-5.0)
+        assert desc.value_fn({"temp": 25}) == -5
 
     def test_temperature_missing_field_is_unknown(self):
         desc = _get_description("temperature")
@@ -47,10 +49,11 @@ class TestTemperatureSensor:
 
     def test_temperature_from_mock_data(self):
         desc = _get_description("temperature")
-        assert desc.value_fn(MOCK_REMI_DATA) == pytest.approx(19.7)
+        assert desc.value_fn(MOCK_REMI_DATA) == pytest.approx(21.4)
 
 
 def test_luminosity_is_not_exposed_as_illuminance():
+    """Keep the app luminosity out of the illuminance sensor."""
     assert all(description.key != "luminosity" for description in SENSOR_DESCRIPTIONS)
 
 

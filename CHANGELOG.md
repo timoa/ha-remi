@@ -1,3 +1,10 @@
+## [0.2.8](https://github.com/timoa/ha-remi/compare/0.2.7...0.2.8) (2026-11-11)
+
+
+### Bug Fixes
+
+* corriger les mesures REMI, les alarmes et la reconnexion au cloud ([#40](https://github.com/timoa/ha-remi/issues/40)) ([1140d27](https://github.com/timoa/ha-remi/commit/1140d2785b79038950f184d1d9f28a5538efe895))
+
 ## [0.2.7](https://github.com/timoa/ha-remi/compare/0.2.6...0.2.7) (2026-11-05)
 
 

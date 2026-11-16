@@ -11,7 +11,9 @@
   "assignees": [
     "timoa"
   ],
-  "dependencyDashboardTitle": "Renovate(bot) : dependency dashboard",
+  "dependencyDashboard": {
+    "title": "Renovate(bot) : dependency dashboard"
+  },
   "packageRules": [
     {
       "description": "Automerge renovate minor and patch updates",
